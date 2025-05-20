@@ -17,21 +17,46 @@ function Login() {
     } = useForm();
     const [error, setError] = useState("");
 
-    const login = async (data) => {
-        setError("");
-        try {
-            const session = await authService.login(data);
-            if (session) {
-                const userData = await authService.getCurrentUser();
-                if (userData) {
-                    dispatch(authLogin(userData));
-                    navigate("/");
-                }
-            }
-        } catch (err) {
-            setError(err?.message || "Login failed.");
+    // const login = async (data) => {
+    //     setError("");
+    //     try {
+    //         const session = await authService.login(data);
+    //         console.log("Session",session);
+    //         if (session) {
+    //             const userData = await authService.getCurrentUser();
+    //             console.log("userdata",userData);
+    //             if (userData) {
+    //                 dispatch(authLogin(userData));
+    //                 navigate("/");
+    //             }
+    //         }
+    //     } catch (err) {
+    //         setError(err?.message || "Login failed.");
+    //     }
+    // };
+
+
+
+        const login = async (data) => {
+    setError("");
+    try {
+        const session = await authService.login(data);
+        console.log("Session:", session); // Should now be a valid object
+
+        const userData = await authService.getCurrentUser();
+        console.log("User data:", userData);
+
+        if (userData) {
+            dispatch(authLogin(userData));
+            navigate("/");
         }
-    };
+    } catch (err) {
+        setError(err?.message || "Login failed.");
+        console.error("Login error:", err);
+    }
+};
+
+
 
     useEffect(() => {
         console.log("My Appwrite Project ID is", config.appwriteprojectid);

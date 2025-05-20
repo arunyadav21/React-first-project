@@ -10,29 +10,53 @@ const client = new Client()
 const account = new Account(client);
 
 export class AuthService {
-    async createAccount({ email, password, name }) {
-        // eslint-disable-next-line no-useless-catch
-        try {
-            const userAccount = await account.create(ID.unique(), email, password, name);
-            if (userAccount) {
-                return await this.login({ email, password });
-            } else {
-                return userAccount;
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
+    // async createAccount({ email, password, name }) {
+    //     // eslint-disable-next-line no-useless-catch
+    //     try {
+    //         const userAccount = await account.create(ID.unique(), email, password, name);
+    //         if (userAccount) {
+    //             return await this.login({ email, password });
+    //         } else {
+    //             return userAccount;
+    //         }
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
-    async login({ email, password }) {
-        // eslint-disable-next-line no-useless-catch
-        try {
-            account.createEmailPasswordSession(email, password );
- // v18+ uses an object
-        } catch (error) {
-            throw error;
-        }
+    async createAccount({ email, password, name }) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        await account.create(ID.unique(), email, password, name);
+        return await this.login({ email, password });
+    } catch (error) {
+        throw error;
     }
+}
+
+
+//     async login({ email, password }) {
+//         // eslint-disable-next-line no-useless-catch
+//         try {
+//             account.createEmailPasswordSession(email, password );
+//  // v18+ uses an object
+//         } catch (error) {
+//             throw error;
+//         }
+//     }
+
+async login({ email, password }) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        // ✅ RETURN the result of session creation
+        return await account.createEmailPasswordSession(email, password);
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
 
     async getCurrentUser() {
         try {
